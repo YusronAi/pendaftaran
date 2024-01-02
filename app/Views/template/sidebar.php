@@ -1,12 +1,13 @@
 <body id="body-pd">
     <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle" style="color: black;"></i> </div>
+        <div class="text-black fs-3"><?= $title; ?></div>
         <div class="header_img"> <img src="img/<?= session()->get('login')['foto']; ?>" alt=""> </div>
     </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
+    <div class="l-navbar" id="nav-bar" style="background-color: pink;">
+        <nav class="nav" style="background-color: pink;">
             <div>
-                <a href="/" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Pendaftaran</span> </a>
+                <a href="/" class="nav_logo" style="color: black;"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name text-black">Pendaftaran</span> </a>
                 <div class="nav_list">
                     <a href="/" class="nav_link"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
                     <a href="/pasien" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Pasien</span> </a>

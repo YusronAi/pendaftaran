@@ -29,7 +29,14 @@
         </div>
 
         <!-- Submit button -->
-        <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Input</button>
+        <div class="d-flex justify-content-center"><button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Save</button></div>
+    </form>
     </form>
 </div>
+
+<style>
+    .form-control  {
+        background-color: pink;
+    }
+</style>
 <?= $this->endSection(); ?>

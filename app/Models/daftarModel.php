@@ -27,7 +27,7 @@ class daftarModel extends Model
         return $result;
     }
 
-    public function GetDaftar($id)
+    public function GetDaftar($value)
     {
         $this->join('dokter', 'dokter.id_dokter = daftar.id_dokter', 'LEFT');
         $this->join('pasien', 'pasien.id_pasien = daftar.id_pasien', 'LEFT');
@@ -37,7 +37,7 @@ class daftarModel extends Model
         $this->select('poliklinik.*');
         $this->select('daftar.*');
         $this->orderBy('daftar.id_daftar');
-        $result = $this->like('id_daftar', $id);
+        $result = $this->where('id_daftar', $value);
 
         // echo $this->db->getLastQuery();
 
@@ -63,5 +63,9 @@ class daftarModel extends Model
     public function cari($id)
     {
         return $this->table('daftar')->like('id_daftar', $id);
+    }
+
+    public function search ($value) {
+        return $this->table('daftar')->like('nama_pasien', $value);
     }
 }

@@ -10,10 +10,12 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 $routes->group('', ['filter' => 'auth'], static function ($routes) {
-    $routes->get('/', 'Home::index', ['filter' => 'auth']);
+    $routes->get('/', 'Home::index');
     $routes->get('/pasien', 'PasienController::pasien');
+    $routes->post('/pasien', 'PasienController::pasien');
     $routes->post('/save-pasien', 'PasienController::save');
     $routes->get('/laporan', 'DaftarController::dataDaftar');
+    $routes->post('/laporan', 'DaftarController::dataDaftar');
     $routes->get('/daftar', 'PasienController::daftar');
     $routes->post('/save-daftar', 'PasienController::saveDaftar');
 
@@ -29,7 +31,6 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/ubah-dokter/(:any)', 'DokterController::ubahDokter/$1');
     $routes->post('/update-dokter/(:any)', 'DokterController::updateDokter/$1');
     
-    $routes->get('/cetak', 'DaftarController::cetak');
     $routes->get('/hapus-daftar/(:any)', 'DaftarController::hapus/$1');
     $routes->get('/edit-daftar/(:any)', 'DaftarController::edit/$1');
     $routes->post('/update-daftar/(:any)', 'DaftarController::update/$1');

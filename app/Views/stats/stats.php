@@ -11,6 +11,11 @@
 
     <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
         <thead>
+            <div class="container search mb-3">
+                <form action="" method="post">
+                    <input type="text" name="keyword" style="background-color: pink; width: 100%; border-radius: 5px; text-align : center;" placeholder="Nama Pasien">
+                </form>
+            </div>
             <tr style="text-align: center;">
                 <th>No</th>
                 <th>Nama Pasien</th>

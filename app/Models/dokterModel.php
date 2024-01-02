@@ -17,6 +17,6 @@ class dokterModel extends Model
 
     public function cari ($id)
     {
-        return $this->table('dokter')->like('id_dokter', $id)->first();
+        return $this->table('dokter')->where('id_dokter', $id)->first();
     }
 }

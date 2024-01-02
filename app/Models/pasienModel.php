@@ -8,11 +8,15 @@ class pasienModel extends Model
 {
     protected $table = 'pasien';
     protected $primaryKey = 'id_pasien';
-    protected $allowedFields = ['no_rm', 'nama_pasien', 'tanggal_lahir', 'umur', 'alamat'];
+    protected $allowedFields = ['no_rm', 'nama_pasien', 'tanggal_lahir', 'umur', 'alamat', 'tgl_periksa', 'nik', 'jenis_kelamin', 'telp', 'pekerjaan', 'agama'];
 
     public function AllData()
     {
         return $this->db->table('pasien')->get()->getResultArray();
+    }
+
+    public function search ($value) {
+        return $this->table('pasien')->like('nama_pasien', $value)->orlike('no_rm', $value);
     }
 
     public function cari ($id)

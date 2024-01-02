@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\pasienModel;
 use App\Models\daftarModel;
-use App\Libraries\MY_TCPDF AS TCPDF;
+use App\Libraries\MY_TCPDF as TCPDF;
 
 class DaftarController extends BaseController
 {
@@ -19,7 +19,14 @@ class DaftarController extends BaseController
 
     public function dataDaftar()
     {
-        $daftar = $this->daftarModel->GetAll();
+        if ($keyword = $this->request->getVar('keyword')) {
+            $daftar = $this->daftarModel->GetDaftar($keyword)->findAll();
+            if (empty($daftar)) {
+                $daftar = $this->daftarModel->GetAll();
+            }
+        } else {
+            $daftar = $this->daftarModel->GetAll();
+        }
         $data = [
             'title' => 'Laporan',
             'daftar' => $daftar
@@ -32,6 +39,8 @@ class DaftarController extends BaseController
     {
         $this->daftarModel->where('id_daftar', $id)->delete();
 
+        session()->setFlashdata('pesan', 'Data Berhasil Dihapus');
+
         return redirect()->to('/laporan');
     }
 
@@ -42,7 +51,7 @@ class DaftarController extends BaseController
         $poli = $this->daftarModel->GetPoli();
         $dokter = $this->daftarModel->GetDokter();
         $data = [
-            'title' => 'Ubah Pendaftaran',
+            'title' => 'Ubah Laporan Pendaftaran',
             'daftar' => $daftar,
             'pasien' => $pasien,
             'dokter' => $dokter,
@@ -64,12 +73,15 @@ class DaftarController extends BaseController
             'biaya' => $this->request->getVar('biaya')
         ]);
 
+        session()->setFlashdata('pesan', 'Data Berhasil Diubah');
         return redirect()->to('/laporan');
     }
 
     public function cetak($id)
     {
         $daftar = $this->daftarModel->GetDaftar($id)->first();
+
+        // dd($daftar);
 
         $data = [
             'title' => 'Invoice',
@@ -78,7 +90,7 @@ class DaftarController extends BaseController
 
         // create new PDF document
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        
+
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('RS PERMATA');
@@ -87,12 +99,12 @@ class DaftarController extends BaseController
         $pdf->SetKeywords('TCPDF, PDF, example, PENDAFTARAN');
 
         // set default header data
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
-        $pdf->setFooterData(array(0,64,0), array(0,64,128));
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE . ' 001', PDF_HEADER_STRING, array(0, 64, 255), array(0, 64, 128));
+        $pdf->setFooterData(array(0, 64, 0), array(0, 64, 128));
 
         // set header and footer fonts
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
         // set default monospaced font
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -121,7 +133,7 @@ class DaftarController extends BaseController
         // This method has several options, check the source code documentation for more information.
         $pdf->AddPage();
 
-       //view mengarah ke invoice.php
+        //view mengarah ke invoice.php
         $html = view('stats/invoice', $data);
 
         // Print text using writeHTMLCell()
@@ -132,6 +144,5 @@ class DaftarController extends BaseController
         // Close and output PDF document
         // This method has several options, check the source code documentation for more information.
         $pdf->Output('PENDAFTARAN.pdf', 'I');
-
     }
 }

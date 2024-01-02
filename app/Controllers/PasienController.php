@@ -2,23 +2,35 @@
 
 namespace App\Controllers;
 
-use App\Models\pasienModel;
 use App\Models\daftarModel;
+use App\Models\pasienModel;
+use App\Models\dokterModel;
+use App\Controllers\BaseController;
+use CodeIgniter\I18n\Time;
 
 class PasienController extends BaseController
 {
     protected $pasienModel;
     protected $daftarModel;
+    protected $dokterModel;
 
     public function __construct()
     {
         $this->pasienModel = new pasienModel();
         $this->daftarModel = new daftarModel();
+        $this->dokterModel = new dokterModel();
     }
 
     public function pasien()
     {
-        $pasien = $this->pasienModel->AllData();
+        if ($keyword = $this->request->getVar('keyword')) {
+            $pasien = $this->pasienModel->search($keyword)->findAll();
+            if (empty($pasien)) {
+                $pasien = $this->pasienModel->AllData();
+            }
+        } else {
+            $pasien = $this->pasienModel->AllData();
+        }
         $data = [
             'title' => 'Data Pasien',
             'pasien' => $pasien
@@ -34,8 +46,19 @@ class PasienController extends BaseController
             'nama_pasien' => $this->request->getVar('nama_pasien'),
             'tanggal_lahir' => $this->request->getVar('tanggal_lahir'),
             'umur' => $this->request->getVar('umur'),
-            'alamat' => $this->request->getVar('alamat')
+            'alamat' => $this->request->getVar('alamat'),
+            'tgl_periksa' => $this->request->getVar('tgl_periksa'),
+            'nik' => $this->request->getVar('nik'),
+            'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+            'telp' => $this->request->getVar('telp'),
+            'pekerjaan' => $this->request->getVar('pekerjaan'),
+            'agama' => $this->request->getVar('agama')
         ]);
+
+        $id = $this->pasienModel->getInsertID();
+        $rm = $this->request->getVar('no_rm');
+        $noRm = $rm . $id;
+        $this->pasienModel->update($id, ['no_rm' => $noRm]);
 
         return redirect()->to('/daftar');
     }
@@ -44,7 +67,7 @@ class PasienController extends BaseController
     {
         $pasien = $this->pasienModel->cari($id);
         $data = [
-            'title' => 'Ubah Pasien',
+            'title' => 'Data Detail Pasien',
             'pasien' => $pasien
         ];
 
@@ -60,6 +83,12 @@ class PasienController extends BaseController
             'tanggal_lahir' => $this->request->getVar('tanggal_lahir'),
             'umur' => $this->request->getVar('umur'),
             'alamat' => $this->request->getVar('alamat'),
+            'tgl_periksa' => $this->request->getVar('tgl_periksa'),
+            'nik' => $this->request->getVar('nik'),
+            'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
+            'telp' => $this->request->getVar('telp'),
+            'pekerjaan' => $this->request->getVar('pekerjaan'),
+            'agama' => $this->request->getVar('agama')
         ]);
 
         session()->setFlashdata('pesan', 'Data berhasil diubah');
@@ -68,8 +97,10 @@ class PasienController extends BaseController
 
     public function hapusPasien($id)
     {
+        $this->daftarModel->where('id_pasien', $id)->delete();
         $this->pasienModel->where('id_pasien', $id)->delete();
 
+        session()->setFlashdata('pesan', 'Data Berhasil Dihapus');
         return redirect()->to('/pasien');
     }
 
@@ -99,6 +130,17 @@ class PasienController extends BaseController
             'biaya' => $this->request->getVar('biaya')
         ]);
 
+        $id_pasien = $this->request->getVar('id_pasien');
+        $id_dokter = $this->request->getVar('id_dokter');
+
+        $dokter = $this->dokterModel->cari($id_dokter);
+        $tarif = $dokter['tarif'];
+
+        $this->daftarModel->whereIn('id_pasien', [$id_pasien])->set([
+            'biaya' => $tarif
+        ])->update();
+
+        session()->setFlashdata('pesan', 'Pasien Berhasil Didaftarkan');
         return redirect()->to('/laporan');
     }
 }

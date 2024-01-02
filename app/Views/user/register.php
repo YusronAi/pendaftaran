@@ -56,17 +56,15 @@
                                             <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
                                                 <label class="form-label" for="foto">Pilih Foto</label>
-                                                <input type="file" name="foto" id="foto" class="form-control" />
+                                                <input type="file" name="foto" id="foto" class="form-control"/>
                                             </div>
                                         </div>
 
-
-
                                         <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                            <label class="form-label" for="role">Role</label>
-                                            <input type="text" id="form3Example4c" class="form-control" name="role" />
+                                            <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
+                                                <label class="form-label" for="form3Example3c">Role</label>
+                                                <input type="text" id="form3Example3c" class="form-control" name="role" />
                                             </div>
                                         </div>
 
@@ -91,4 +89,9 @@
     </section>
 </body>
 
+<style>
+    .form-control  {
+        background-color: pink;
+    }
+</style>
 </html>
