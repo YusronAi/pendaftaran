@@ -24,16 +24,17 @@ class PasienController extends BaseController
     public function pasien()
     {
         if ($keyword = $this->request->getVar('keyword')) {
-            $pasien = $this->pasienModel->search($keyword)->findAll();
+            $pasien = $this->pasienModel->search($keyword);
             if (empty($pasien)) {
-                $pasien = $this->pasienModel->AllData();
+                $pasien = $this->pasienModel;
             }
         } else {
-            $pasien = $this->pasienModel->AllData();
+            $pasien = $this->pasienModel;
         }
         $data = [
             'title' => 'Data Pasien',
-            'pasien' => $pasien
+            'pasien' => $pasien->paginate(1),
+            'pager' => $pasien->pager
         ];
 
         return view('pasien/pasien', $data);

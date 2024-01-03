@@ -15,10 +15,11 @@ class DokterController extends BaseController
 
     public function dokter()
     {
-        $dokter = $this->dokterModel->AllData();
+        $dokter = $this->dokterModel;
         $data = [
             'title' => 'Data Dokter',
-            'dokter' => $dokter
+            'dokter' => $dokter->paginate(9),
+            'pager' => $dokter->pager
         ];
 
         return view('dokter/dokter', $data);

@@ -29,7 +29,7 @@ class DaftarController extends BaseController
         }
         $data = [
             'title' => 'Laporan',
-            'daftar' => $daftar
+            'daftar' => $daftar,
         ];
 
         return view('stats/stats', $data);

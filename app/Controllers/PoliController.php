@@ -15,10 +15,11 @@ class   PoliController extends BaseController
 
     public function poli()
     {
-        $poli = $this->poliModel->AllData();
+        $poli = $this->poliModel;
         $data = [
             'title' => 'Data Poliklinik',
-            'poli' => $poli
+            'poli' => $poli->paginate(8),
+            'pager' => $poli->pager
         ];
 
         return view('poli/poli', $data);

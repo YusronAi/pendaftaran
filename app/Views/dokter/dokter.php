@@ -47,7 +47,7 @@
                 <?php $i++ ?>
             <?php endforeach; ?>
     </table>
-
+<?= $pager->links(); ?>
 </div>
 
 
